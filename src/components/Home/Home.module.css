@@ -1,32 +1,164 @@
 .container {
   padding-top: 40px;
   padding-bottom: 40px;
+  position: relative;
+}
+
+/* Background decorations */
+.backgroundDecorations {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.decorationCircle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.1;
+  animation: float 20s ease-in-out infinite;
+}
+
+.decoration1 {
+  width: 400px;
+  height: 400px;
+  background: linear-gradient(135deg, #6C63FF, #FF6584);
+  top: -100px;
+  right: -100px;
+  animation-delay: 0s;
+}
+
+.decoration2 {
+  width: 300px;
+  height: 300px;
+  background: linear-gradient(135deg, #FF6584, #FFB347);
+  bottom: -80px;
+  left: -80px;
+  animation-delay: -7s;
+}
+
+.decoration3 {
+  width: 200px;
+  height: 200px;
+  background: linear-gradient(135deg, #6C63FF, #4CAF50);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation-delay: -14s;
+  opacity: 0.05;
 }
 
 .paper {
-  padding: 32px;
-  border-radius: 12px;
-  background: white;
+  padding: 0;
+  border-radius: 24px !important;
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  box-shadow: 0 20px 60px rgba(108, 99, 255, 0.15) !important;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
 }
 
+/* Header - Centered */
 .header {
+  background: linear-gradient(135deg, #6C63FF 0%, #FF6584 100%);
+  padding: 32px 32px 28px;
+  position: relative;
+  overflow: hidden;
   text-align: center;
-  margin-bottom: 24px;
 }
 
-.header h1 {
-  color: #1976d2;
-  font-weight: 600;
-  margin-bottom: 4px;
+.header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 300px;
+  height: 300px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  pointer-events: none;
 }
 
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: -40%;
+  left: -10%;
+  width: 200px;
+  height: 200px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.headerContent {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoWrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logoIcon {
+  font-size: 32px;
+  animation: float 3s ease-in-out infinite;
+}
+
+.title {
+  color: white !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.5px !important;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.subtitle {
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-weight: 400 !important;
+  margin-top: 4px !important;
+  opacity: 0.9;
+}
+
+/* Date Navigation - Improved for mobile */
 .dateNavigation {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 0;
-  margin-bottom: 16px;
-  border-bottom: 1px solid #e0e0e0;
+  padding: 16px 24px;
+  background: rgba(255, 255, 255, 0.5);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+
+.navButton {
+  background: rgba(108, 99, 255, 0.08) !important;
+  transition: all 0.3s ease !important;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+}
+
+.navButton:hover {
+  background: rgba(108, 99, 255, 0.15) !important;
+  transform: scale(1.05);
+}
+
+.navButton:active {
+  transform: scale(0.95);
 }
 
 .dateDisplay {
@@ -34,72 +166,401 @@
   flex-direction: column;
   align-items: center;
   gap: 4px;
+  flex: 1;
+  min-width: 0;
+  padding: 0 4px;
 }
 
-.dateDisplay h6 {
-  font-weight: 500;
-  color: #333;
+.dateText {
+  font-weight: 600 !important;
+  color: #1a1a2e !important;
+  letter-spacing: -0.3px !important;
+  font-size: 1.1rem !important;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.dateActions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: nowrap;
 }
 
 .todayButton {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   padding: 4px 12px;
-  background-color: #1976d2;
+  background: linear-gradient(135deg, #6C63FF, #8B83FF);
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 20px;
   cursor: pointer;
-  font-size: 12px;
-  transition: background-color 0.2s;
+  font-size: 11px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .todayButton:hover {
-  background-color: #1565c0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
 }
 
+.todayButton:active {
+  transform: translateY(0);
+}
+
+.viewOnlyBadge {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 8px;
+  background: rgba(255, 101, 132, 0.15);
+  color: #FF6584;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.viewOnlyBadge svg {
+  font-size: 12px !important;
+}
+
+/* Warning Banner */
+.warningBanner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 32px 16px;
+  padding: 10px 16px;
+  background: rgba(255, 101, 132, 0.08);
+  border: 1px solid rgba(255, 101, 132, 0.2);
+  border-radius: 12px;
+  color: #FF6584;
+}
+
+.warningBanner svg {
+  flex-shrink: 0;
+}
+
+/* Stats */
 .stats {
   display: flex;
-  justify-content: space-between;
-  padding: 8px 0;
-  margin-bottom: 16px;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 32px;
+  background: rgba(108, 99, 255, 0.03);
+  border-radius: 12px;
+  margin: 0 32px 16px;
 }
 
+.statItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.statNumber {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a2e;
+  letter-spacing: -0.5px;
+}
+
+.statLabel {
+  font-size: 13px;
+  color: #666;
+  font-weight: 500;
+}
+
+.statDivider {
+  width: 1px;
+  height: 24px;
+  background: rgba(0, 0, 0, 0.08);
+}
+
+/* Footer */
 .footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid #e0e0e0;
+  padding: 16px 32px 24px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .clearButton {
-  padding: 6px 16px;
-  background-color: #f44336;
+  padding: 8px 20px;
+  background: linear-gradient(135deg, #FF6584, #FF85A0);
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 12px;
   cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.2s;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
 }
 
 .clearButton:hover {
-  background-color: #d32f2f;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(255, 101, 132, 0.3);
 }
 
-@media (max-width: 600px) {
-  .paper {
-    padding: 16px;
+.clearButton:active {
+  transform: translateY(0);
+}
+
+.divider {
+  margin: 0 32px 16px !important;
+  opacity: 0.3;
+}
+
+/* Animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-20px) rotate(5deg);
+  }
+  66% {
+    transform: translateY(10px) rotate(-5deg);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fadeInUp {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* ===== MOBILE RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .container {
+    padding: 12px;
+  }
+  
+  .header {
+    padding: 20px 16px 16px;
+  }
+  
+  .logoIcon {
+    font-size: 28px;
+  }
+  
+  .title {
+    font-size: 1.5rem !important;
+  }
+  
+  .subtitle {
+    font-size: 0.85rem !important;
+  }
+  
+  /* Compact date navigation for mobile */
+  .dateNavigation {
+    padding: 12px 16px;
+    gap: 6px;
+  }
+  
+  .navButton {
+    width: 34px;
+    height: 34px;
+  }
+  
+  .navButton svg {
+    font-size: 20px;
+  }
+  
+  .dateText {
+    font-size: 0.95rem !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 140px;
+  }
+  
+  .dateActions {
+    gap: 4px;
+  }
+  
+  .todayButton {
+    padding: 3px 10px;
+    font-size: 10px;
+  }
+  
+  .todayButton svg {
+    font-size: 14px;
+  }
+  
+  .viewOnlyBadge {
+    font-size: 9px;
+    padding: 2px 6px;
+  }
+  
+  .viewOnlyBadge svg {
+    font-size: 10px !important;
+  }
+  
+  .warningBanner {
+    margin: 0 16px 12px;
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+  
+  .stats {
+    padding: 10px 16px;
+    margin: 0 16px 12px;
+    gap: 10px;
+    flex-wrap: nowrap;
+  }
+  
+  .statNumber {
+    font-size: 18px;
+  }
+  
+  .statLabel {
+    font-size: 12px;
+  }
+  
+  .statDivider {
+    height: 20px;
   }
   
   .footer {
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
+    padding: 12px 16px 16px;
+  }
+  
+  .divider {
+    margin: 0 16px 12px !important;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+  .container {
+    padding: 8px;
+  }
+  
+  .paper {
+    border-radius: 16px !important;
+  }
+  
+  .header {
+    padding: 16px 12px 14px;
+  }
+  
+  .logoIcon {
+    font-size: 24px;
+  }
+  
+  .title {
+    font-size: 1.3rem !important;
+  }
+  
+  .subtitle {
+    font-size: 0.75rem !important;
   }
   
   .dateNavigation {
-    flex-wrap: wrap;
-    gap: 8px;
-    justify-content: center;
+    padding: 10px 12px;
+    gap: 4px;
+  }
+  
+  .navButton {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .navButton svg {
+    font-size: 18px;
+  }
+  
+  .dateText {
+    font-size: 0.85rem !important;
+    max-width: 100px;
+  }
+  
+  .dateActions {
+    gap: 3px;
+  }
+  
+  .todayButton {
+    padding: 2px 8px;
+    font-size: 9px;
+    border-radius: 16px;
+  }
+  
+  .todayButton svg {
+    font-size: 12px;
+  }
+  
+  .viewOnlyBadge {
+    font-size: 8px;
+    padding: 1px 5px;
+  }
+  
+  .viewOnlyBadge svg {
+    font-size: 8px !important;
+  }
+  
+  .warningBanner {
+    margin: 0 12px 8px;
+    padding: 6px 10px;
+    font-size: 11px;
+    border-radius: 8px;
+  }
+  
+  .stats {
+    padding: 8px 12px;
+    margin: 0 12px 8px;
+    gap: 6px;
+    border-radius: 8px;
+  }
+  
+  .statNumber {
+    font-size: 16px;
+  }
+  
+  .statLabel {
+    font-size: 10px;
+  }
+  
+  .statDivider {
+    height: 16px;
+  }
+  
+  .footer {
+    padding: 10px 12px 14px;
+  }
+  
+  .clearButton {
+    padding: 6px 14px;
+    font-size: 11px;
+    border-radius: 8px;
+  }
+  
+  .divider {
+    margin: 0 12px 8px !important;
   }
 }

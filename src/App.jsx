@@ -7,21 +7,47 @@ import './App.css'
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#1976d2',
+      main: '#6C63FF',
+      light: '#8B83FF',
+      dark: '#5A52D5',
     },
     secondary: {
-      main: '#dc004e',
+      main: '#FF6584',
+      light: '#FF85A0',
+      dark: '#E55A78',
     },
     background: {
-      default: '#f5f5f5',
+      default: '#f0f2f5',
+      paper: '#ffffff',
+    },
+    gradient: {
+      primary: 'linear-gradient(135deg, #6C63FF 0%, #FF6584 100%)',
+      secondary: 'linear-gradient(135deg, #FF6584 0%, #FFB347 100%)',
     },
   },
   typography: {
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    fontFamily: '"Inter", "Segoe UI", "Roboto", "Helvetica", "Arial", sans-serif',
     h4: {
+      fontWeight: 700,
+      letterSpacing: '-0.5px',
+    },
+    h6: {
       fontWeight: 600,
+      letterSpacing: '-0.3px',
     },
   },
+  shape: {
+    borderRadius: 16,
+  },
+  shadows: [
+    'none',
+    '0 2px 8px rgba(108, 99, 255, 0.08)',
+    '0 4px 16px rgba(108, 99, 255, 0.12)',
+    '0 8px 32px rgba(108, 99, 255, 0.16)',
+    '0 12px 48px rgba(108, 99, 255, 0.2)',
+    '0 16px 64px rgba(108, 99, 255, 0.24)',
+    ...Array(20).fill('none'),
+  ],
 })
 
 // Helper function to format date as YYYY-MM-DD without timezone issues
