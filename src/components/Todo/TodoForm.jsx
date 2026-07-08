@@ -7,13 +7,13 @@ import {
 } from '@mui/material'
 import { Add as AddIcon } from '@mui/icons-material'
 
-const TodoForm = ({ addTodo }) => {
+const TodoForm = ({ addTodo, selectedDate }) => {
   const [text, setText] = useState('')
 
   const handleSubmit = (e) => {
     e.preventDefault()
     if (text.trim()) {
-      addTodo(text.trim())
+      addTodo(text.trim(), selectedDate)
       setText('')
     }
   }
@@ -34,7 +34,7 @@ const TodoForm = ({ addTodo }) => {
     >
       <TextField
         fullWidth
-        placeholder="Add a new task..."
+        placeholder={`Add a new task${selectedDate ? ` for ${new Date(selectedDate).toLocaleDateString()}` : ''}...`}
         value={text}
         onChange={(e) => setText(e.target.value)}
         variant="outlined"

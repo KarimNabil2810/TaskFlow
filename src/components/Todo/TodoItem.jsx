@@ -6,7 +6,6 @@ import {
   TextField,
   Box,
   Typography,
-  ListItemSecondaryAction,
 } from '@mui/material'
 import {
   Delete as DeleteIcon,
@@ -15,7 +14,7 @@ import {
   Cancel as CancelIcon,
 } from '@mui/icons-material'
 
-const TodoItem = ({ todo, toggleTodo, deleteTodo, editTodo }) => {
+const TodoItem = ({ todo, toggleTodo, deleteTodo, editTodo, selectedDate }) => {
   const [isEditing, setIsEditing] = useState(false)
   const [editText, setEditText] = useState(todo.text)
 
@@ -26,7 +25,7 @@ const TodoItem = ({ todo, toggleTodo, deleteTodo, editTodo }) => {
 
   const handleSave = () => {
     if (editText.trim()) {
-      editTodo(todo.id, editText.trim())
+      editTodo(todo.id, editText.trim(), selectedDate)
       setIsEditing(false)
     }
   }
@@ -61,7 +60,7 @@ const TodoItem = ({ todo, toggleTodo, deleteTodo, editTodo }) => {
     >
       <Checkbox
         checked={todo.completed}
-        onChange={() => toggleTodo(todo.id)}
+        onChange={() => toggleTodo(todo.id, selectedDate)}
         sx={{
           color: '#1976d2',
           '&.Mui-checked': {
@@ -129,7 +128,7 @@ const TodoItem = ({ todo, toggleTodo, deleteTodo, editTodo }) => {
               <EditIcon />
             </IconButton>
             <IconButton
-              onClick={() => deleteTodo(todo.id)}
+              onClick={() => deleteTodo(todo.id, selectedDate)}
               size="small"
               color="error"
               sx={{ '&:hover': { bgcolor: 'rgba(211, 47, 47, 0.1)' } }}

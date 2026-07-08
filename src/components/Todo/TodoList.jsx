@@ -1,7 +1,7 @@
 import { List, Paper } from '@mui/material'
 import TodoItem from './TodoItem'
 
-const TodoList = ({ todos, toggleTodo, deleteTodo, editTodo }) => {
+const TodoList = ({ todos, toggleTodo, deleteTodo, editTodo, selectedDate }) => {
   if (todos.length === 0) {
     return (
       <Paper
@@ -14,7 +14,7 @@ const TodoList = ({ todos, toggleTodo, deleteTodo, editTodo }) => {
         }}
       >
         <p style={{ color: '#666', fontSize: '16px' }}>
-          No tasks to display
+          No tasks for this day
         </p>
       </Paper>
     )
@@ -29,6 +29,7 @@ const TodoList = ({ todos, toggleTodo, deleteTodo, editTodo }) => {
           toggleTodo={toggleTodo}
           deleteTodo={deleteTodo}
           editTodo={editTodo}
+          selectedDate={selectedDate}
         />
       ))}
     </List>
