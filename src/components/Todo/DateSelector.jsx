@@ -1,12 +1,12 @@
 import { useState, useRef, useEffect } from 'react'
 import {
   Box,
-  Paper,
   IconButton,
   Typography,
   Popover,
   Button,
   Tooltip,
+  alpha,
 } from '@mui/material'
 import {
   CalendarToday as CalendarIcon,
@@ -33,7 +33,6 @@ const DateSelector = ({ selectedDate, onDateChange, getAllDates, getDateTasks })
 
   const open = Boolean(anchorEl)
 
-  // Helper function to format date as YYYY-MM-DD without timezone issues
   const formatDateToYYYYMMDD = (date) => {
     const year = date.getFullYear()
     const month = String(date.getMonth() + 1).padStart(2, '0')
@@ -87,7 +86,6 @@ const DateSelector = ({ selectedDate, onDateChange, getAllDates, getDateTasks })
   }
 
   const handleDateSelect = (date) => {
-    // Allow selecting ANY date (past or future) for viewing
     const dateString = formatDateToYYYYMMDD(date)
     onDateChange(dateString)
     handleClose()
@@ -113,17 +111,25 @@ const DateSelector = ({ selectedDate, onDateChange, getAllDates, getDateTasks })
   }
 
   return (
-    <Box sx={{ mb: 2 }}>
+    <Box sx={{ px: 3, pb: 1 }}>
       <Button
         variant="outlined"
         startIcon={<CalendarIcon />}
         onClick={handleClick}
         sx={{
-          borderColor: '#e0e0e0',
-          color: '#333',
+          borderColor: alpha('#6C63FF', 0.2),
+          color: '#6C63FF',
+          borderRadius: '12px',
+          px: 3,
+          py: 1,
+          fontWeight: 600,
+          textTransform: 'none',
+          transition: 'all 0.3s ease',
           '&:hover': {
-            borderColor: '#1976d2',
-            bgcolor: 'rgba(25, 118, 210, 0.04)',
+            borderColor: '#6C63FF',
+            bgcolor: alpha('#6C63FF', 0.04),
+            transform: 'translateY(-2px)',
+            boxShadow: '0 4px 20px rgba(108, 99, 255, 0.15)',
           },
         }}
       >
@@ -144,34 +150,54 @@ const DateSelector = ({ selectedDate, onDateChange, getAllDates, getDateTasks })
         }}
         sx={{
           '& .MuiPopover-paper': {
-            p: 2,
-            minWidth: 320,
-            borderRadius: 2,
+            p: 3,
+            minWidth: 340,
+            borderRadius: '20px',
+            background: 'rgba(255, 255, 255, 0.95)',
+            backdropFilter: 'blur(20px)',
+            border: '1px solid rgba(255, 255, 255, 0.3)',
+            boxShadow: '0 20px 60px rgba(108, 99, 255, 0.15)',
           },
         }}
       >
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-          <IconButton onClick={() => changeMonth(-1)} size="small">
+          <IconButton 
+            onClick={() => changeMonth(-1)} 
+            size="small"
+            sx={{
+              bgcolor: alpha('#6C63FF', 0.05),
+              '&:hover': { bgcolor: alpha('#6C63FF', 0.1) },
+            }}
+          >
             <ChevronLeftIcon />
           </IconButton>
-          <Typography variant="subtitle1" fontWeight={500}>
+          <Typography variant="subtitle1" fontWeight={600} color="#1a1a2e">
             {formatMonthYear(currentMonth)}
           </Typography>
-          <IconButton onClick={() => changeMonth(1)} size="small">
+          <IconButton 
+            onClick={() => changeMonth(1)} 
+            size="small"
+            sx={{
+              bgcolor: alpha('#6C63FF', 0.05),
+              '&:hover': { bgcolor: alpha('#6C63FF', 0.1) },
+            }}
+          >
             <ChevronRightIcon />
           </IconButton>
         </Box>
 
-        <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 0.5, mb: 1 }}>
+        <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 0.5, mb: 1.5 }}>
           {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((day) => (
             <Typography
               key={day}
               variant="caption"
               sx={{
                 textAlign: 'center',
-                fontWeight: 600,
-                color: '#666',
+                fontWeight: 700,
+                color: '#999',
                 py: 0.5,
+                fontSize: '11px',
+                letterSpacing: '0.5px',
               }}
             >
               {day}
@@ -206,12 +232,14 @@ const DateSelector = ({ selectedDate, onDateChange, getAllDates, getDateTasks })
                     alignItems: 'center',
                     justifyContent: 'center',
                     cursor: 'pointer',
-                    borderRadius: 1,
-                    bgcolor: isSelected ? '#1976d2' : 'transparent',
-                    color: isSelected ? 'white' : isPast ? '#999' : 'inherit',
-                    opacity: isPast ? 0.7 : 1,
+                    borderRadius: '12px',
+                    bgcolor: isSelected ? '#6C63FF' : 'transparent',
+                    color: isSelected ? 'white' : isPast ? '#bdbdbd' : '#1a1a2e',
+                    opacity: isPast ? 0.6 : 1,
+                    transition: 'all 0.2s ease',
                     '&:hover': {
-                      bgcolor: isSelected ? '#1565c0' : '#f0f0f0',
+                      bgcolor: isSelected ? '#5A52D5' : alpha('#6C63FF', 0.08),
+                      transform: isSelected ? 'scale(1.02)' : 'scale(1.05)',
                     },
                     position: 'relative',
                   }}
@@ -224,7 +252,7 @@ const DateSelector = ({ selectedDate, onDateChange, getAllDates, getDateTasks })
                         left: '50%',
                         transform: 'translate(-50%, -50%)',
                         fontSize: '20px',
-                        opacity: 0.2,
+                        opacity: 0.15,
                       }}
                     >
                       <BlockIcon fontSize="small" />
@@ -234,8 +262,9 @@ const DateSelector = ({ selectedDate, onDateChange, getAllDates, getDateTasks })
                     variant="body2"
                     sx={{
                       fontWeight: isToday ? 700 : 400,
-                      fontSize: isToday ? '0.875rem' : '0.75rem',
+                      fontSize: isToday ? '0.9rem' : '0.8rem',
                       zIndex: 1,
+                      position: 'relative',
                     }}
                   >
                     {date.getDate()}
@@ -246,18 +275,18 @@ const DateSelector = ({ selectedDate, onDateChange, getAllDates, getDateTasks })
                         width: 4,
                         height: 4,
                         borderRadius: '50%',
-                        bgcolor: '#1976d2',
+                        bgcolor: '#6C63FF',
                         mt: 0.5,
                         zIndex: 1,
                       }}
                     />
                   )}
-                  {hasTask && (
+                  {hasTask && !isPast && (
                     <Box
                       sx={{
                         position: 'absolute',
-                        top: 2,
-                        right: 2,
+                        top: 4,
+                        right: 4,
                         width: 8,
                         height: 8,
                         borderRadius: '50%',
@@ -266,7 +295,7 @@ const DateSelector = ({ selectedDate, onDateChange, getAllDates, getDateTasks })
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        color: isSelected ? '#1976d2' : 'white',
+                        color: isSelected ? '#6C63FF' : 'white',
                         fontWeight: 700,
                         zIndex: 1,
                       }}
@@ -280,10 +309,22 @@ const DateSelector = ({ selectedDate, onDateChange, getAllDates, getDateTasks })
           })}
         </Box>
         
-        <Box sx={{ mt: 2, pt: 1, borderTop: '1px solid #e0e0e0' }}>
-          <Typography variant="caption" color="textSecondary">
-            <BlockIcon sx={{ fontSize: 14, verticalAlign: 'middle', mr: 0.5 }} />
-            Past dates are view-only (no new tasks)
+        <Box sx={{ 
+          mt: 2, 
+          pt: 1.5, 
+          borderTop: '1px solid',
+          borderColor: alpha('#000', 0.05),
+          display: 'flex',
+          alignItems: 'center',
+          gap: 2,
+        }}>
+          <Typography variant="caption" sx={{ color: '#999', display: 'flex', alignItems: 'center', gap: 0.5 }}>
+            <BlockIcon sx={{ fontSize: 14, color: '#bdbdbd' }} />
+            Past dates are view-only
+          </Typography>
+          <Typography variant="caption" sx={{ color: '#999', display: 'flex', alignItems: 'center', gap: 0.5 }}>
+            <Box sx={{ width: 8, height: 8, bgcolor: '#4caf50', borderRadius: '50%', display: 'inline-block' }} />
+            Has tasks
           </Typography>
         </Box>
       </Popover>
