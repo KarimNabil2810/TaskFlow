@@ -1,16 +1,61 @@
-# React + Vite
+# 📝 TaskFlow - Modern Todo App
+A beautiful, feature-rich task management application built with React, Vite, and Material-UI. TaskFlow helps you organize your tasks efficiently with date-based organization, priority levels, categories, and a stunning modern interface.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## ✨ Features
+### 📅 Date-Based Organization
+- View and manage tasks for any day with intuitive navigation
 
-Currently, two official plugins are available:
+- Navigate between dates with arrow buttons
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Visual calendar for quick date selection with task count indicators
 
-## React Compiler
+- View-only mode for past dates (cannot add tasks to past days)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### ⏰ Task Management
+- Set start and end dates with specific times
 
-## Expanding the ESLint configuration
+- Four priority levels: Low, Medium, High, Urgent (color-coded)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Six categories: Personal, Work, Study, Health, Shopping, Other
+
+- Automatic detection for multi-day tasks
+
+- Visual overdue warning for tasks past their end date
+
+### 🎨 Modern UI/UX
+- Glass-morphism design with smooth animations and transitions
+
+- Purple to Pink gradient color scheme
+
+- Fully responsive for all devices
+
+- Interactive hover effects and smooth animations
+
+- Confirmation dialogs for delete and clear actions
+
+### 💾 Data Persistence
+- Automatic saving to localStorage
+
+- Tasks organized by date
+
+- Data persists across browser sessions
+
+### 🛡️ Smart Validation
+- Cannot add tasks to past dates
+
+- Delete confirmation dialog
+
+- Clear completed tasks confirmation
+
+### 🚀 Tech Stack
+- **Frontend:** React 18 with Vite
+
+- **UI Framework:** Material-UI (MUI)
+
+- **Date Handling:** date-fns, @mui/x-date-pickers
+
+- **Styling:** CSS Modules + MUI sx prop
+
+- **Icons:** Material-UI Icons
+
+<img width="2048" height="1456" alt="localhost_5173_" src="https://github.com/user-attachments/assets/4a7842fd-d3b3-46e9-9481-e8bd1e104b0d" />
