@@ -6,11 +6,13 @@ import {
   Typography,
   Popover,
   Button,
+  Tooltip,
 } from '@mui/material'
 import {
   CalendarToday as CalendarIcon,
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
+  Block as BlockIcon,
 } from '@mui/icons-material'
 
 const DateSelector = ({ selectedDate, onDateChange, getAllDates, getDateTasks }) => {
@@ -30,6 +32,14 @@ const DateSelector = ({ selectedDate, onDateChange, getAllDates, getDateTasks })
   }
 
   const open = Boolean(anchorEl)
+
+  // Helper function to format date as YYYY-MM-DD without timezone issues
+  const formatDateToYYYYMMDD = (date) => {
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    const day = String(date.getDate()).padStart(2, '0')
+    return `${year}-${month}-${day}`
+  }
 
   const getDaysInMonth = (date) => {
     const year = date.getFullYear()
@@ -63,6 +73,13 @@ const DateSelector = ({ selectedDate, onDateChange, getAllDates, getDateTasks })
            date.getDate() === selected.getDate()
   }
 
+  const isPastDate = (date) => {
+    const today = new Date()
+    const todayStr = formatDateToYYYYMMDD(today)
+    const dateStr = formatDateToYYYYMMDD(date)
+    return dateStr < todayStr
+  }
+
   const hasTasks = (date) => {
     const dateString = formatDateToYYYYMMDD(date)
     const tasks = getDateTasks(dateString)
@@ -70,6 +87,7 @@ const DateSelector = ({ selectedDate, onDateChange, getAllDates, getDateTasks })
   }
 
   const handleDateSelect = (date) => {
+    // Allow selecting ANY date (past or future) for viewing
     const dateString = formatDateToYYYYMMDD(date)
     onDateChange(dateString)
     handleClose()
@@ -92,14 +110,6 @@ const DateSelector = ({ selectedDate, onDateChange, getAllDates, getDateTasks })
     const dateString = formatDateToYYYYMMDD(date)
     const tasks = getDateTasks(dateString)
     return tasks ? tasks.length : 0
-  }
-
-  // Helper function to format date as YYYY-MM-DD without timezone issues
-  const formatDateToYYYYMMDD = (date) => {
-    const year = date.getFullYear()
-    const month = String(date.getMonth() + 1).padStart(2, '0')
-    const day = String(date.getDate()).padStart(2, '0')
-    return `${year}-${month}-${day}`
   }
 
   return (
@@ -177,73 +187,104 @@ const DateSelector = ({ selectedDate, onDateChange, getAllDates, getDateTasks })
 
             const isToday = isDateToday(date)
             const isSelected = isDateSelected(date)
+            const isPast = isPastDate(date)
             const hasTask = hasTasks(date)
             const taskCount = getDateCount(date)
 
             return (
-              <Box
-                key={formatDateToYYYYMMDD(date)}
-                onClick={() => handleDateSelect(date)}
-                sx={{
-                  aspectRatio: '1',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer',
-                  borderRadius: 1,
-                  bgcolor: isSelected ? '#1976d2' : 'transparent',
-                  color: isSelected ? 'white' : 'inherit',
-                  '&:hover': {
-                    bgcolor: isSelected ? '#1565c0' : '#f0f0f0',
-                  },
-                  position: 'relative',
-                }}
+              <Tooltip 
+                key={formatDateToYYYYMMDD(date)} 
+                title={isPast ? "Past date - View only" : "Click to view"}
+                placement="top"
               >
-                <Typography
-                  variant="body2"
+                <Box
+                  onClick={() => handleDateSelect(date)}
                   sx={{
-                    fontWeight: isToday ? 700 : 400,
-                    fontSize: isToday ? '0.875rem' : '0.75rem',
+                    aspectRatio: '1',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer',
+                    borderRadius: 1,
+                    bgcolor: isSelected ? '#1976d2' : 'transparent',
+                    color: isSelected ? 'white' : isPast ? '#999' : 'inherit',
+                    opacity: isPast ? 0.7 : 1,
+                    '&:hover': {
+                      bgcolor: isSelected ? '#1565c0' : '#f0f0f0',
+                    },
+                    position: 'relative',
                   }}
                 >
-                  {date.getDate()}
-                </Typography>
-                {isToday && !isSelected && (
-                  <Box
+                  {isPast && (
+                    <Box
+                      sx={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        fontSize: '20px',
+                        opacity: 0.2,
+                      }}
+                    >
+                      <BlockIcon fontSize="small" />
+                    </Box>
+                  )}
+                  <Typography
+                    variant="body2"
                     sx={{
-                      width: 4,
-                      height: 4,
-                      borderRadius: '50%',
-                      bgcolor: '#1976d2',
-                      mt: 0.5,
-                    }}
-                  />
-                )}
-                {hasTask && (
-                  <Box
-                    sx={{
-                      position: 'absolute',
-                      top: 2,
-                      right: 2,
-                      width: 8,
-                      height: 8,
-                      borderRadius: '50%',
-                      bgcolor: isSelected ? 'rgba(255,255,255,0.8)' : '#4caf50',
-                      fontSize: '6px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: isSelected ? '#1976d2' : 'white',
-                      fontWeight: 700,
+                      fontWeight: isToday ? 700 : 400,
+                      fontSize: isToday ? '0.875rem' : '0.75rem',
+                      zIndex: 1,
                     }}
                   >
-                    {taskCount > 1 ? taskCount : ''}
-                  </Box>
-                )}
-              </Box>
+                    {date.getDate()}
+                  </Typography>
+                  {isToday && !isSelected && (
+                    <Box
+                      sx={{
+                        width: 4,
+                        height: 4,
+                        borderRadius: '50%',
+                        bgcolor: '#1976d2',
+                        mt: 0.5,
+                        zIndex: 1,
+                      }}
+                    />
+                  )}
+                  {hasTask && (
+                    <Box
+                      sx={{
+                        position: 'absolute',
+                        top: 2,
+                        right: 2,
+                        width: 8,
+                        height: 8,
+                        borderRadius: '50%',
+                        bgcolor: isSelected ? 'rgba(255,255,255,0.8)' : '#4caf50',
+                        fontSize: '6px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: isSelected ? '#1976d2' : 'white',
+                        fontWeight: 700,
+                        zIndex: 1,
+                      }}
+                    >
+                      {taskCount > 1 ? taskCount : ''}
+                    </Box>
+                  )}
+                </Box>
+              </Tooltip>
             )
           })}
+        </Box>
+        
+        <Box sx={{ mt: 2, pt: 1, borderTop: '1px solid #e0e0e0' }}>
+          <Typography variant="caption" color="textSecondary">
+            <BlockIcon sx={{ fontSize: 14, verticalAlign: 'middle', mr: 0.5 }} />
+            Past dates are view-only (no new tasks)
+          </Typography>
         </Box>
       </Popover>
     </Box>
