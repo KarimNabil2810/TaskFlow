@@ -51,13 +51,11 @@ function App() {
     return todos[date] || []
   }
 
-  const addTodo = (text, date) => {
+  const addTodo = (taskData, date) => {
     const dateKey = date || selectedDate
     const newTodo = {
       id: Date.now(),
-      text,
-      completed: false,
-      createdAt: new Date().toISOString(),
+      ...taskData,
     }
     
     setTodos((prev) => ({

@@ -6,10 +6,12 @@ import {
   Box,
   Divider,
   IconButton,
+  Tooltip,
 } from '@mui/material'
 import {
   ArrowBack as ArrowBackIcon,
   ArrowForward as ArrowForwardIcon,
+  Block as BlockIcon,
 } from '@mui/icons-material'
 import TodoForm from '../Todo/TodoForm'
 import TodoList from '../Todo/TodoList'
@@ -54,7 +56,14 @@ const Home = ({
   const filteredTodos = getFilteredTodos()
   const activeCount = todos.filter((todo) => !todo.completed).length
 
+  const isPastDate = (dateString) => {
+    const today = new Date()
+    const todayStr = formatDateToYYYYMMDD(today)
+    return dateString < todayStr
+  }
+
   const handleDateChange = (newDate) => {
+    // Allow any date to be viewed, but adding tasks will be blocked
     setSelectedDate(newDate)
     setFilter('all')
   }
@@ -62,7 +71,9 @@ const Home = ({
   const handlePreviousDay = () => {
     const date = new Date(selectedDate)
     date.setDate(date.getDate() - 1)
-    handleDateChange(formatDateToYYYYMMDD(date))
+    const newDateStr = formatDateToYYYYMMDD(date)
+    // Allow going to any past date for viewing
+    handleDateChange(newDateStr)
   }
 
   const handleNextDay = () => {
@@ -135,6 +146,14 @@ const Home = ({
                 Go to Today
               </button>
             )}
+            {isPastDate(selectedDate) && (
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mt: 0.5 }}>
+                <BlockIcon sx={{ fontSize: 16, color: '#f44336' }} />
+                <Typography variant="caption" color="error">
+                  View Only - Past Date
+                </Typography>
+              </Box>
+            )}
           </Box>
           
           <IconButton onClick={handleNextDay} size="small">
@@ -150,6 +169,14 @@ const Home = ({
         />
 
         <TodoForm addTodo={addTodo} selectedDate={selectedDate} />
+
+        {isPastDate(selectedDate) && (
+          <Box sx={{ mt: 1, p: 1, bgcolor: '#fff3e0', borderRadius: 1 }}>
+            <Typography variant="caption" color="warning.main">
+              ⚠️ This is a past date. You can view tasks but cannot add new ones.
+            </Typography>
+          </Box>
+        )}
 
         <Divider sx={{ my: 3 }} />
 
